@@ -30,12 +30,23 @@ namespace AnalogClock
             int x = xc - r;
             int y = yc - r;
             g.DrawEllipse(Pens.Blue, x, y, w, h);
+            //Hour Indicators
+            int r1 = r;
+            int r2 = r - 20;
+            double thetaInterval = DegToRad(30);
+            DrawIndicators(g, new Pen(Color.Black,2) ,r1, r2, thetaInterval,xc,yc);
+            //Minute Indicators
+            r1 = r;
+            r2 = (int)(0.92*r);
+            thetaInterval = DegToRad(6);
+            DrawIndicators(g, new Pen(Color.Black, 2), r1, r2, thetaInterval, xc, yc);
+            //
             int sec = DateTime.Now.Second;
             int min=DateTime.Now.Minute;
             int hour=DateTime.Now.Hour;
-            DrawSecondHand(g,sec,r-10,xc,yc);
-            DrawMinuteHand(g, min, r-20,xc, yc,sec);
-            DrawHourHand(g, hour, r - 35, xc, yc, min,sec);
+            DrawSecondHand(g,sec,r-25,xc,yc);
+            DrawMinuteHand(g, min, r-35,xc, yc,sec);
+            DrawHourHand(g, hour, r - 45, xc, yc, min,sec);
      
         }
 
@@ -55,7 +66,7 @@ namespace AnalogClock
             theta = DegToRad(theta);
             int x =xc+(int)(r * Math.Cos(theta));
             int y= yc-(int)(r * Math.Sin(theta));
-            g.DrawLine(Pens.Red, xc, yc, x, y);
+            g.DrawLine(new Pen(Color.Red,1), xc, yc, x, y);
 
         }
         private void DrawMinuteHand(Graphics g, int minute, int r, int xc, int yc,int second)
@@ -64,7 +75,7 @@ namespace AnalogClock
             theta = DegToRad(theta);
             int x = xc + (int)(r * Math.Cos(theta));
             int y = yc - (int)(r * Math.Sin(theta));
-            g.DrawLine(Pens.MediumTurquoise, xc, yc, x, y);
+            g.DrawLine(new Pen(Color.PowderBlue,2), xc, yc, x, y);
 
         }
         private void DrawHourHand(Graphics g, int hour, int r, int xc, int yc, int minute,int second)
@@ -73,9 +84,27 @@ namespace AnalogClock
             theta = DegToRad(theta);
             int x = xc + (int)(r * Math.Cos(theta));
             int y = yc - (int)(r * Math.Sin(theta));
-            g.DrawLine(Pens.SandyBrown, xc, yc, x, y);
+            g.DrawLine(new Pen(Color.SpringGreen,3), xc, yc, x, y);
 
         }
+        private void DrawIndicator(Graphics g, Pen pen,int r1,int r2,double theta,int xc,int yc)
+       {
+          
+           int x1 = xc + (int)(r1 * Math.Cos(theta));
+           int y1 = yc - (int)(r1 * Math.Sin(theta));
+           int x2 = xc + (int)(r2 * Math.Cos(theta));
+           int y2 = yc - (int)(r2 * Math.Sin(theta));
+           g.DrawLine(Pens.Black, x1, y1, x2, y2);
+            
+       }
+        private void DrawIndicators(Graphics g, Pen pen, int r1, int r2, double thetaInterval, int xc, int yc)
+        {
+          for(double theta=0;theta<2*Math.PI;theta+=thetaInterval)
+          {
+              DrawIndicator(g, pen, r1, r2, theta, xc, yc);
+          }
+        }
+
         private double DegToRad(double theta)
         {
             return ( theta * (Math.PI / 180));
