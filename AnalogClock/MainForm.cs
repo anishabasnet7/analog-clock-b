@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace AnalogClock
 {
@@ -20,6 +21,7 @@ namespace AnalogClock
         private void MainForm_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
             int xc = ClientSize.Width / 2;
             int yc = ClientSize.Height / 2;
            // g.DrawLine(Pens.Black, 0, yc, ClientSize.Width, yc);
@@ -32,9 +34,9 @@ namespace AnalogClock
             g.DrawEllipse(Pens.Blue, x, y, w, h);
             //Hour Indicators
             int r1 = r;
-            int r2 = r - 20;
+            int r2 = r -70;
             double thetaInterval = DegToRad(30);
-            DrawIndicators(g, new Pen(Color.Black,2) ,r1, r2, thetaInterval,xc,yc);
+            DrawIndicators(g, new Pen(Color.Black,4) ,r1, r2, thetaInterval,xc,yc);
             //Minute Indicators
             r1 = r;
             r2 = (int)(0.92*r);
@@ -44,9 +46,9 @@ namespace AnalogClock
             int sec = DateTime.Now.Second;
             int min=DateTime.Now.Minute;
             int hour=DateTime.Now.Hour;
-            DrawSecondHand(g,sec,r-25,xc,yc);
-            DrawMinuteHand(g, min, r-35,xc, yc,sec);
-            DrawHourHand(g, hour, r - 45, xc, yc, min,sec);
+            DrawSecondHand(g,sec,r-80,xc,yc);
+            DrawMinuteHand(g, min, r-100,xc, yc,sec);
+            DrawHourHand(g, hour, r - 140, xc, yc, min,sec);
      
         }
 
@@ -75,7 +77,7 @@ namespace AnalogClock
             theta = DegToRad(theta);
             int x = xc + (int)(r * Math.Cos(theta));
             int y = yc - (int)(r * Math.Sin(theta));
-            g.DrawLine(new Pen(Color.PowderBlue,2), xc, yc, x, y);
+            g.DrawLine(new Pen(Color.Black,3), xc, yc, x, y);
 
         }
         private void DrawHourHand(Graphics g, int hour, int r, int xc, int yc, int minute,int second)
@@ -84,7 +86,7 @@ namespace AnalogClock
             theta = DegToRad(theta);
             int x = xc + (int)(r * Math.Cos(theta));
             int y = yc - (int)(r * Math.Sin(theta));
-            g.DrawLine(new Pen(Color.SpringGreen,3), xc, yc, x, y);
+            g.DrawLine(new Pen(Color.Black,4), xc, yc, x, y);
 
         }
         private void DrawIndicator(Graphics g, Pen pen,int r1,int r2,double theta,int xc,int yc)
@@ -94,7 +96,7 @@ namespace AnalogClock
            int y1 = yc - (int)(r1 * Math.Sin(theta));
            int x2 = xc + (int)(r2 * Math.Cos(theta));
            int y2 = yc - (int)(r2 * Math.Sin(theta));
-           g.DrawLine(Pens.Black, x1, y1, x2, y2);
+           g.DrawLine(pen, x1, y1, x2, y2);
             
        }
         private void DrawIndicators(Graphics g, Pen pen, int r1, int r2, double thetaInterval, int xc, int yc)
